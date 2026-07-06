@@ -20,6 +20,9 @@ public class Order {
 
     private OrderStatus status;
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
+
     public Order() {
     }
 
@@ -62,6 +65,14 @@ public class Order {
         this.moment = moment;
     }
 
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -82,6 +93,7 @@ public class Order {
                 ", moment=" + moment +
                 ", client=" + client +
                 ", status=" + status +
+                ", payment=" + payment +
                 '}';
     }
 }
