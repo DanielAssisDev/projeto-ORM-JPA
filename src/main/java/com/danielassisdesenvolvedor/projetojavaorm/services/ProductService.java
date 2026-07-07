@@ -1,0 +1,28 @@
+package com.danielassisdesenvolvedor.projetojavaorm.services;
+
+import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
+import com.danielassisdesenvolvedor.projetojavaorm.entities.Product;
+import com.danielassisdesenvolvedor.projetojavaorm.repositories.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+public class ProductService {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Transactional(readOnly = true)
+    public List<ProductDTO> findAll(){
+        List<Product> list = productRepository.findAll();
+        return list.stream().map(ProductDTO::new).toList();
+    }
+
+    @Transactional
+    public ProductDTO findById(Long id){
+        return new ProductDTO(productRepository.findById(id).get());
+    }
+}
