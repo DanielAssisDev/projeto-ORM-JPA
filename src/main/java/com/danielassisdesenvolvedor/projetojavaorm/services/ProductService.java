@@ -4,8 +4,11 @@ import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.Product;
 import com.danielassisdesenvolvedor.projetojavaorm.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 
@@ -16,9 +19,8 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Transactional(readOnly = true)
-    public List<ProductDTO> findAll(){
-        List<Product> list = productRepository.findAll();
-        return list.stream().map(ProductDTO::new).toList();
+    public Page<ProductDTO> findAll(Pageable pageable){
+        return productRepository.findAll(pageable).map(ProductDTO::new);
     }
 
     @Transactional

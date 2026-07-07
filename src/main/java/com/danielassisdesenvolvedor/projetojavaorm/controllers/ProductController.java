@@ -3,6 +3,8 @@ package com.danielassisdesenvolvedor.projetojavaorm.controllers;
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Reader;
@@ -19,8 +21,8 @@ public class ProductController {
     public ProductDTO findById(@PathVariable Long id){return productService.findById(id);
     }
 
-    @GetMapping("/")
-    public List<ProductDTO> findAll(Reader reader) {
-        return productService.findAll();
+    @GetMapping
+    public Page<ProductDTO> findAll(Pageable pageable) {
+        return productService.findAll(pageable);
     }
 }
