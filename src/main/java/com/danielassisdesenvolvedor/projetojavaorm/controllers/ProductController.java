@@ -21,7 +21,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> findById(@PathVariable Long id){
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
         return new ResponseEntity<>(productService.findById(id), HttpStatus.OK);
     }
 
@@ -31,7 +31,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO productDTO,
+                                             Pageable pageable) {
         return new ResponseEntity<>(productService.insert(productDTO), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        return new ResponseEntity<>(productService.update(id, productDTO), HttpStatus.OK);
     }
 }

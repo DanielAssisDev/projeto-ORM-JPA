@@ -37,4 +37,14 @@ public class ProductService {
         productRepository.save(product);
         return productDTO;
     }
+
+    public ProductDTO update(Long id, ProductDTO productDTO){
+        Product product = productRepository.findById(id).get();
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setPrice(productDTO.getPrice());
+        product.setImgUrl(productDTO.getImgUrl());
+        productRepository.save(product);
+        return productDTO;
+    }
 }
