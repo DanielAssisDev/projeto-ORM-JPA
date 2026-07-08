@@ -1,7 +1,6 @@
 package com.danielassisdesenvolvedor.projetojavaorm.controllers;
 
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
-import com.danielassisdesenvolvedor.projetojavaorm.entities.Product;
 import com.danielassisdesenvolvedor.projetojavaorm.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,9 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import java.net.URI;
 
-import java.io.Reader;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -22,22 +21,23 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
-        return new ResponseEntity<>(productService.findById(id), HttpStatus.OK);
+        return ResponseEntity.ok(productService.findById(id));
     }
 
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable) {
-        return new ResponseEntity<>(productService.findAll(pageable), HttpStatus.OK);
+        return ResponseEntity.ok(productService.findAll(pageable));
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO productDTO,
-                                             Pageable pageable) {
-        return new ResponseEntity<>(productService.insert(productDTO), HttpStatus.CREATED);
+    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO productDTO) {
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(productDTO.getId()).toUri();
+        return ResponseEntity.created(uri).body(productService.insert(productDTO));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
-        return new ResponseEntity<>(productService.update(id, productDTO), HttpStatus.OK);
+        return ResponseEntity.ok(productService.update(id, productDTO));
     }
 }
