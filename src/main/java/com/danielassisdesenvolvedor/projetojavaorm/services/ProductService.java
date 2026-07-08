@@ -19,12 +19,22 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(Pageable pageable){
+    public Page<ProductDTO> findAll(Pageable pageable) {
         return productRepository.findAll(pageable).map(ProductDTO::new);
     }
 
-    @Transactional
-    public ProductDTO findById(Long id){
+    @Transactional(readOnly = true)
+    public ProductDTO findById(Long id) {
         return new ProductDTO(productRepository.findById(id).get());
+    }
+
+    public ProductDTO insert(ProductDTO productDTO) {
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setPrice(productDTO.getPrice());
+        product.setImgUrl(productDTO.getImgUrl());
+        productRepository.save(product);
+        return productDTO;
     }
 }
