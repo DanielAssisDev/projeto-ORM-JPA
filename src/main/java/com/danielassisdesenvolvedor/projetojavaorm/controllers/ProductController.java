@@ -22,12 +22,8 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        try {
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
             return ResponseEntity.ok(productService.findById(id));
-        } catch (ResourceNotFoundException e){
-            return ResponseEntity.status(404).body(new CustomErrorDTO(Instant.now(), 404, e.getMessage(), "path"));
-        }
     }
 
     @GetMapping

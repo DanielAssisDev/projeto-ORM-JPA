@@ -3,11 +3,15 @@ package com.danielassisdesenvolvedor.projetojavaorm.services;
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.Product;
 import com.danielassisdesenvolvedor.projetojavaorm.repositories.ProductRepository;
+import com.danielassisdesenvolvedor.projetojavaorm.services.exceptions.DatabaseException;
 import com.danielassisdesenvolvedor.projetojavaorm.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -41,15 +45,28 @@ public class ProductService {
 
     @Transactional
     public ProductDTO update(Long id, ProductDTO productDTO) {
-        Product product = productRepository.getReferenceById(id);
-        copyDTOToEntity(productDTO, product);
-        product = productRepository.save(product);
-        return new ProductDTO(product);
+        try {
+            Product product = productRepository.getReferenceById(id);
+            copyDTOToEntity(productDTO, product);
+            product = productRepository.save(product);
+            return new ProductDTO(product);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        }
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-        productRepository.deleteById(id);
+        if(!productRepository.existsById(id)){
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        }
+        try {
+            productRepository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial");
+        }
+
     }
 
     private void copyDTOToEntity(ProductDTO productDTO, Product product) {
