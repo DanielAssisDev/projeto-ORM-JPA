@@ -1,7 +1,9 @@
 package com.danielassisdesenvolvedor.projetojavaorm.controllers;
 
+import com.danielassisdesenvolvedor.projetojavaorm.dto.CustomErrorDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.services.ProductService;
+import com.danielassisdesenvolvedor.projetojavaorm.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
+import java.time.Instant;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -19,11 +22,11 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(productService.findById(id));
-        } catch (Exception e){
-            return ResponseEntity.notFound().build();
+        } catch (ResourceNotFoundException e){
+            return ResponseEntity.status(404).body(new CustomErrorDTO(Instant.now(), 404, e.getMessage(), "path"));
         }
     }
 
