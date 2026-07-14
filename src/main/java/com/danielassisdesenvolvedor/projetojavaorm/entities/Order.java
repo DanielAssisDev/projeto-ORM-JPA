@@ -12,6 +12,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "DATETIME")
     private Instant moment;
 
     @ManyToOne
