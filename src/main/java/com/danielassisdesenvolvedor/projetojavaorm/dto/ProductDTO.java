@@ -2,12 +2,9 @@ package com.danielassisdesenvolvedor.projetojavaorm.dto;
 
 import com.danielassisdesenvolvedor.projetojavaorm.entities.Product;
 import jakarta.persistence.Column;
-import jakarta.validation.Payload;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-
-import java.time.Instant;
 
 public class ProductDTO {
 
