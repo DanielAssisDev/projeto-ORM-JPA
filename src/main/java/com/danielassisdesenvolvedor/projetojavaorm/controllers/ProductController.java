@@ -1,18 +1,15 @@
 package com.danielassisdesenvolvedor.projetojavaorm.controllers;
 
-import com.danielassisdesenvolvedor.projetojavaorm.dto.CustomErrorDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.services.ProductService;
-import com.danielassisdesenvolvedor.projetojavaorm.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
-import java.time.Instant;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -27,8 +24,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(productService.findAll(pageable));
+    public ResponseEntity<Page<ProductDTO>> findAll(
+            @RequestParam(name = "name", defaultValue = "") String name,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "12") Integer size
+    ) {
+        return ResponseEntity.ok(productService.findAll(name, PageRequest.of(page, size)));
     }
 
     @PostMapping

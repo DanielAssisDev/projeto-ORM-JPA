@@ -21,9 +21,9 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(Pageable pageable) {
+    public Page<ProductDTO> findAll(String name, Pageable pageable) {
         try {
-            return productRepository.findAll(pageable).map(ProductDTO::new);
+            return productRepository.searchByName(name, pageable).map(ProductDTO::new);
         } catch (RuntimeException e) {
             throw new ResourceNotFoundException("Recursos não encontrados");
         }
