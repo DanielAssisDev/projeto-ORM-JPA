@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="tb_user")
@@ -21,6 +23,12 @@ public class User {
 
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "tb_user_role",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name= "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
@@ -80,6 +88,17 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void addRole(Role role){
+        roles.add(role);
+    }
+
+    public boolean hasRole(String roleName){
+        for(Role role : roles) {
+            return role.getAuthority().equals(roleName);
+        }
+        return false;
     }
 
     @Override
