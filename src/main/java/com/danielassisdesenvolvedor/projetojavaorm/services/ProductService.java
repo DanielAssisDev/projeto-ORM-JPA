@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 public class ProductService {
 
@@ -36,11 +34,6 @@ public class ProductService {
     public ProductDTO findById(Long id) {
         return new ProductDTO(productRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado")));
-    }
-
-    @Transactional(readOnly = true)
-    public List<UserDTO> findByEmail(String email) {
-        return productRepository.searchUserAndRolesByEmail(email).stream().map(UserDTO::new).toList();
     }
 
     @Transactional
@@ -74,7 +67,6 @@ public class ProductService {
         catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Falha de integridade referencial");
         }
-
     }
 
     private void copyDTOToEntity(ProductDTO productDTO, Product product) {
@@ -83,6 +75,4 @@ public class ProductService {
         product.setPrice(productDTO.getPrice());
         product.setImgUrl(productDTO.getImgUrl());
     }
-
-
 }

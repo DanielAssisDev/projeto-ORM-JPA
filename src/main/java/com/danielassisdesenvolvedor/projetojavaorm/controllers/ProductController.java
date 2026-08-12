@@ -34,13 +34,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.findAll(name, PageRequest.of(page, size)));
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<List<UserDTO>> findByEmail(
-            @RequestParam(name = "email", defaultValue = "") String email
-    ) {
-        return ResponseEntity.ok(productService.findByEmail(email));
-    }
-
     @PostMapping
     public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDTO) {
         productDTO = productService.insert(productDTO);
