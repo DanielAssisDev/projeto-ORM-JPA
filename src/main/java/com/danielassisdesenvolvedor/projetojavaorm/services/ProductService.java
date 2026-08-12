@@ -1,6 +1,7 @@
 package com.danielassisdesenvolvedor.projetojavaorm.services;
 
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
+import com.danielassisdesenvolvedor.projetojavaorm.dto.UserDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.Product;
 import com.danielassisdesenvolvedor.projetojavaorm.repositories.ProductRepository;
 import com.danielassisdesenvolvedor.projetojavaorm.services.exceptions.DatabaseException;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -33,6 +36,11 @@ public class ProductService {
     public ProductDTO findById(Long id) {
         return new ProductDTO(productRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado")));
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserDTO> findByEmail(String email) {
+        return productRepository.searchUserAndRolesByEmail(email).stream().map(UserDTO::new).toList();
     }
 
     @Transactional
@@ -75,4 +83,6 @@ public class ProductService {
         product.setPrice(productDTO.getPrice());
         product.setImgUrl(productDTO.getImgUrl());
     }
+
+
 }

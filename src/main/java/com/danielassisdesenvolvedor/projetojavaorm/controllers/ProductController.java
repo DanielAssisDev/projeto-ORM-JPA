@@ -1,6 +1,7 @@
 package com.danielassisdesenvolvedor.projetojavaorm.controllers;
 
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
+import com.danielassisdesenvolvedor.projetojavaorm.dto.UserDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -30,6 +32,13 @@ public class ProductController {
             @RequestParam(name = "size", defaultValue = "12") Integer size
     ) {
         return ResponseEntity.ok(productService.findAll(name, PageRequest.of(page, size)));
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<UserDTO>> findByEmail(
+            @RequestParam(name = "email", defaultValue = "") String email
+    ) {
+        return ResponseEntity.ok(productService.findByEmail(email));
     }
 
     @PostMapping
