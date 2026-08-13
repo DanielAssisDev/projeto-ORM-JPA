@@ -90,6 +90,7 @@ public class User implements UserDetails {
         return password;
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public String getUsername() {
         return email;

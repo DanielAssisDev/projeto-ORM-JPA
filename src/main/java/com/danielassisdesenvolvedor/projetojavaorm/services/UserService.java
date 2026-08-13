@@ -26,13 +26,13 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        List<UserDetailsProjection> users = userRepository.searchUserAndRolesByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        List<UserDetailsProjection> users = userRepository.searchUserAndRolesByEmail(username);
         if(users.isEmpty()){
             throw new UsernameNotFoundException("Usuário não encontrado!");
         }
         User user = new User();
-        user.setEmail(email);
+        user.setEmail(users.getFirst().getUsername());
         user.setPassword(users.getFirst().getPassword());
         for(UserDetailsProjection projection : users){
             user.addRole(new Role(projection.getRoleId(), projection.getAuthority()));

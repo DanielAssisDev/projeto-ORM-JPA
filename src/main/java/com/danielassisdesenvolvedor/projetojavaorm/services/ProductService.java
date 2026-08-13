@@ -1,7 +1,6 @@
 package com.danielassisdesenvolvedor.projetojavaorm.services;
 
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
-import com.danielassisdesenvolvedor.projetojavaorm.dto.UserDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.Product;
 import com.danielassisdesenvolvedor.projetojavaorm.repositories.ProductRepository;
 import com.danielassisdesenvolvedor.projetojavaorm.services.exceptions.DatabaseException;
