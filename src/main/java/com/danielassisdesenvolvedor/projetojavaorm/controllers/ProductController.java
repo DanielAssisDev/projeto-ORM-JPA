@@ -1,30 +1,28 @@
 package com.danielassisdesenvolvedor.projetojavaorm.controllers;
 
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
-import com.danielassisdesenvolvedor.projetojavaorm.dto.UserDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/products")
-@CrossOrigin(origins = "*")
 public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
-            return ResponseEntity.ok(productService.findById(id));
+        return ResponseEntity.ok(productService.findById(id));
     }
 
     @GetMapping
@@ -53,7 +51,7 @@ public class ProductController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete (@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         productService.delete(id);
         return ResponseEntity.noContent().build();
     }
