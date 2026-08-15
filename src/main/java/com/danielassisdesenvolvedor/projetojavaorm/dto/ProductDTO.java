@@ -1,10 +1,15 @@
 package com.danielassisdesenvolvedor.projetojavaorm.dto;
 
+import com.danielassisdesenvolvedor.projetojavaorm.entities.Category;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.Product;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDTO {
 
@@ -19,7 +24,10 @@ public class ProductDTO {
     @Positive(message = "O preço deve ter valor positivo")
     private Double price;
     private String imgUrl;
-    
+
+    @NotEmpty(message = "O produto deve ter ao menos uma categoria")
+    private List<CategoryDTO> categories = new ArrayList<>();
+
     public ProductDTO() {
     }
 
@@ -29,6 +37,9 @@ public class ProductDTO {
         description = product.getDescription();
         price = product.getPrice();
         imgUrl = product.getImgUrl();
+        for (Category category : product.getCategories()) {
+            categories.add(new CategoryDTO(category));
+        }
     }
 
     public Long getId() {
@@ -49,5 +60,13 @@ public class ProductDTO {
 
     public String getImgUrl() {
         return imgUrl;
+    }
+
+    public List<CategoryDTO> getCategories() {
+        return categories;
+    }
+
+    public void addCategory(CategoryDTO category) {
+        categories.add(category);
     }
 }

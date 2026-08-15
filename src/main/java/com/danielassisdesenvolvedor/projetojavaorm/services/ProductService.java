@@ -1,7 +1,9 @@
 package com.danielassisdesenvolvedor.projetojavaorm.services;
 
+import com.danielassisdesenvolvedor.projetojavaorm.dto.CategoryDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductMinDTO;
+import com.danielassisdesenvolvedor.projetojavaorm.entities.Category;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.Product;
 import com.danielassisdesenvolvedor.projetojavaorm.repositories.ProductRepository;
 import com.danielassisdesenvolvedor.projetojavaorm.services.exceptions.DatabaseException;
@@ -74,5 +76,11 @@ public class ProductService {
         product.setDescription(productDTO.getDescription());
         product.setPrice(productDTO.getPrice());
         product.setImgUrl(productDTO.getImgUrl());
+        product.getCategories().clear();
+        for(CategoryDTO categoryDTO : productDTO.getCategories()){
+            Category category = new Category();
+            category.setId(categoryDTO.getId());
+            product.getCategories().add(category);
+        }
     }
 }
