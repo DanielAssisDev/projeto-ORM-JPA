@@ -1,7 +1,7 @@
 package com.danielassisdesenvolvedor.projetojavaorm.services;
 
 import com.danielassisdesenvolvedor.projetojavaorm.dto.UserDTO;
-import com.danielassisdesenvolvedor.projetojavaorm.dto.UserMinDTO;
+import com.danielassisdesenvolvedor.projetojavaorm.dto.ClientDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.Role;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.User;
 import com.danielassisdesenvolvedor.projetojavaorm.projections.UserDetailsProjection;
@@ -25,8 +25,8 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<UserMinDTO> findByEmail(String email) {
-        return userRepository.searchUserAndRolesByEmailLike(email).stream().map(UserMinDTO::new).toList();
+    public List<UserDTO> findByEmail(String email) {
+        return userRepository.searchUserAndRolesByEmailLike(email);
     }
 
     @Override

@@ -25,12 +25,20 @@ public class OrderItem {
         this.price = price;
     }
 
-    public OrderItemPK getId() {
-        return id;
+    public Order getOrder() {
+        return id.getOrder();
     }
 
-    public void setId(OrderItemPK id) {
-        this.id = id;
+    public void setOrder(Order order) {
+        id.setOrder(order);
+    }
+
+    public Product getProduct() {
+        return id.getProduct();
+    }
+
+    public void setProduct(Product product) {
+        id.setProduct(product);
     }
 
     public Integer getQuantity() {
