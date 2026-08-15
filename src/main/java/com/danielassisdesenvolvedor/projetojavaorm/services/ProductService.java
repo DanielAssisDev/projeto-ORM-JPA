@@ -1,6 +1,7 @@
 package com.danielassisdesenvolvedor.projetojavaorm.services;
 
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
+import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductMinDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.Product;
 import com.danielassisdesenvolvedor.projetojavaorm.repositories.ProductRepository;
 import com.danielassisdesenvolvedor.projetojavaorm.services.exceptions.DatabaseException;
@@ -21,9 +22,9 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(String name, Pageable pageable) {
+    public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
         try {
-            return productRepository.searchByName(name, pageable).map(ProductDTO::new);
+            return productRepository.searchByName(name, pageable).map(ProductMinDTO::new);
         } catch (RuntimeException e) {
             throw new ResourceNotFoundException("Recursos não encontrados");
         }
