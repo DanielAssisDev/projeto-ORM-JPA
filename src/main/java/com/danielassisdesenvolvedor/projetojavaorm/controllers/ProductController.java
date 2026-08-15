@@ -1,7 +1,6 @@
 package com.danielassisdesenvolvedor.projetojavaorm.controllers;
 
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductDTO;
-import com.danielassisdesenvolvedor.projetojavaorm.dto.ProductMinDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductMinDTO>> findAll(
+    public ResponseEntity<Page<ProductDTO>> findAll(
             @RequestParam(name = "name", defaultValue = "") String name,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "12") Integer size
