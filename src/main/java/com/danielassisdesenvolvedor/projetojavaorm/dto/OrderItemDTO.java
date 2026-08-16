@@ -22,6 +22,9 @@ public class OrderItemDTO {
         this.quantity = quantity;
     }
 
+    public OrderItemDTO() {
+    }
+
     public Long getProductId() {
         return productId;
     }

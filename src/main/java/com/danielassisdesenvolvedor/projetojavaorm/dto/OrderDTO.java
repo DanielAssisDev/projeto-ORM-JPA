@@ -29,6 +29,9 @@ public class OrderDTO {
         }
     }
 
+    public OrderDTO() {
+    }
+
     public Long getId() {
         return id;
     }
