@@ -3,10 +3,7 @@ package com.danielassisdesenvolvedor.projetojavaorm.dto;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.Category;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.Product;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +18,7 @@ public class ProductDTO {
     @Size(min = 10, message = "A descrição precisa ter no mínimo 10 caracteres")
     @NotBlank(message = "A descrição não pode estar vazia")
     private String description;
+    @NotNull(message = "Campo requerido")
     @Positive(message = "O preço deve ter valor positivo")
     private Double price;
     private String imgUrl;
