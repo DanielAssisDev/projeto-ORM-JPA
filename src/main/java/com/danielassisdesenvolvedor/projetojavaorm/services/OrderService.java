@@ -2,17 +2,30 @@ package com.danielassisdesenvolvedor.projetojavaorm.services;
 
 import com.danielassisdesenvolvedor.projetojavaorm.dto.*;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.*;
+import com.danielassisdesenvolvedor.projetojavaorm.repositories.OrderItemRepository;
 import com.danielassisdesenvolvedor.projetojavaorm.repositories.OrderRepository;
+import com.danielassisdesenvolvedor.projetojavaorm.repositories.ProductRepository;
 import com.danielassisdesenvolvedor.projetojavaorm.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 
 @Service
 public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Transactional(readOnly = true)
     public OrderDTO findById(Long id) {
@@ -23,26 +36,17 @@ public class OrderService {
     @Transactional
     public OrderDTO insert(OrderDTO orderDTO) {
         Order order = new Order();
-        copyDTOToEntity(orderDTO, order);
-        order = orderRepository.save(order);
+        order.setMoment(Instant.now());
+        order.setStatus(OrderStatus.WAITING_PAYMENT);
+        order.setClient(userService.authenticated());
+        for(OrderItemDTO itemDTO :  orderDTO.getItems()){
+            Product product = productRepository.getReferenceById(itemDTO.getProductId());
+            OrderItem orderItem = new OrderItem(order, product, itemDTO.getQuantity(), product.getPrice());
+            order.getItems().add(orderItem);
+        }
+        orderRepository.save(order);
+        orderItemRepository.saveAll(order.getItems());
         return new OrderDTO(order);
     }
 
-    public void copyDTOToEntity (OrderDTO orderDTO, Order order){
-        order.setMoment(orderDTO.getMoment());
-        User user = new User();
-        user.setId(orderDTO.getClient().getId());
-        order.setClient(user);
-        order.setStatus(orderDTO.getStatus());
-        Payment payment = new Payment();
-        payment.setId(orderDTO.getPayment().getId());
-        order.setPayment((orderDTO.getPayment() == null) ? null : order.getPayment());
-        for(OrderItemDTO orderItemDTO : orderDTO.getItems()){
-            OrderItem orderItem = new OrderItem();
-            Product product = new Product();
-            product.setId(orderItemDTO.getProductId());
-            orderItem.setProduct(product);
-            orderItem.setOrder(order);
-        }
-    }
 }

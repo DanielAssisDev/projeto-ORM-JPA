@@ -3,7 +3,6 @@ package com.danielassisdesenvolvedor.projetojavaorm.dto;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.Order;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.OrderItem;
 import com.danielassisdesenvolvedor.projetojavaorm.entities.OrderStatus;
-import com.danielassisdesenvolvedor.projetojavaorm.entities.Product;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ public class OrderDTO {
     private Long id;
     private Instant moment;
     private OrderStatus status;
-
     private ClientDTO client;
     private PaymentDTO payment;
     private List<OrderItemDTO> items = new ArrayList<>();
