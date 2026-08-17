@@ -3,6 +3,7 @@ package com.danielassisdesenvolvedor.projetojavaorm.controllers.handlers;
 import com.danielassisdesenvolvedor.projetojavaorm.dto.CustomErrorDTO;
 import com.danielassisdesenvolvedor.projetojavaorm.dto.ValidationError;
 import com.danielassisdesenvolvedor.projetojavaorm.services.exceptions.DatabaseException;
+import com.danielassisdesenvolvedor.projetojavaorm.services.exceptions.ForbiddenException;
 import com.danielassisdesenvolvedor.projetojavaorm.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,13 @@ public class ControllerExceptionHandler {
         for(FieldError f : e.getBindingResult().getFieldErrors()){
             err.addErrors(f.getField(), f.getDefaultMessage());
         }
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomErrorDTO> forbidden(ForbiddenException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        ValidationError err = new ValidationError(Instant.now(), status.value(), "Acesso negado", request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 
