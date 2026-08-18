@@ -49,7 +49,7 @@ public class ProductController {
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
         return ResponseEntity.ok(productService.update(id, productDTO));
     }
-
+    
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
